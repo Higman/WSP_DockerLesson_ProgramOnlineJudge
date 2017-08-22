@@ -1,0 +1,40 @@
+doctype html
+html 
+  head
+    meta charset="utf-8"
+    title 簡易オンラインジャッジシステム
+  body
+    / 入力フォームの作成
+    h1 簡易オンラインジャッジシステム
+
+    select#language
+      option[value="ruby"]   ruby
+      option[value="python"] python
+      option[value="c"]      c
+    br
+    p ソースコード: 
+    div id="source_code" style="width= 100%; height: 200px; border: 1px solid;"
+    p 標準入力:
+    textarea name="" id="input" cols="30" rows="10" style="width: 100%; height: 50px; resize: vertical;"
+    button id="run_button" class="btn btn-primary" 実行(Ctrl+Enter)
+    br
+    hr
+
+    / 出力結果の作成
+    p 標準出力:
+    pre
+      div id="stdout" style="background: lightgray"
+    p 標準エラー出力:
+    pre
+      div id="stderr" style="background: lightgray"
+    p 実行時間:
+    div id="time" style="background: lightgray"
+    p 終了コード:
+    div id="exit_code" style="background: lightgray"
+
+    / ライブラリの呼出し
+    script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"
+    script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"
+    script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ext-language_tools.js"
+    <script src="run.js"></script>
+    <script src="ui.js"></script>
