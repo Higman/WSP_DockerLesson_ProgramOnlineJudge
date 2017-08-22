@@ -75,7 +75,8 @@ post '/api/run' do
 
   # コンテナ実行
   container.start
-  res = container.exec(['bash', '-c', "cd /workspace && /usr/bin/time -q -f \"%e\" -o /workspace/time.txt timeout 3 #{exec_cmd} < #{input_filename}"])
+  container_cmd = "cd /workspace && /usr/bin/time -q -f \"%e\" -o /workspace/time.txt timeout 3 #{exec_cmd} < #{input_filename}"  # コマンド
+  res = container.exec(['bash', '-c', container_cmd])
   container.stop                # コンテナの停止
   container.delete(force: true) # コンテナの削除
 
