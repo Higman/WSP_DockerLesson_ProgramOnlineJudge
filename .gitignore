@@ -54,3 +54,6 @@ build-iPhoneSimulator/
 .rvmrc
 
 # End of https://www.gitignore.io/api/ruby
+
+# memo
+/memo/
