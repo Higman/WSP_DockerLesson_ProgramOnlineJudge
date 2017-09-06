@@ -1,3 +1,5 @@
+$: << File.dirname(__FILE__)
+
 require 'bundler'
 Bundler.require
 
@@ -8,6 +10,7 @@ require 'json'
 require 'logger'
 require 'open3'
 require 'fileutils'
+
 
 logger = Logger.new(STDOUT)
 
