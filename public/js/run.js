@@ -17,6 +17,8 @@ function runCode() {
     }
   }).done(function(result) {
     // サーバ側で実行終了したときの結果の反映
+    
+    console.log(result)
     $('#stdout').text(result.stdout);
     $('#stderr').text(result.stderr);
     $('#time').text(result.time);

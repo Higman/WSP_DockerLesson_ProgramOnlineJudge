@@ -33,8 +33,8 @@ class DirectoryManager
   end 
 
   # ディレクトリ作成するメソッド
-  def make_directory
-    FileUtils.mkdir_p(@path)
+  def make_directory(dir_mode = 0775)
+    FileUtils.mkdir_p(@path, mode: dir_mode)
   end
 
   # ディレクトリ削除メソッド

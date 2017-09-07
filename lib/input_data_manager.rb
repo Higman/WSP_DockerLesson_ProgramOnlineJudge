@@ -6,10 +6,14 @@ class InputDataManager
   include Enumerable
   
   # 初期化メソッド
-  def initialize
+  def initialize(params)
     @language        = params[:language]
     @source_code     = params[:source_code]
     @standard_inputs = params[:input]
+  end
+
+  def get_all
+    {language: @language, source_code: @source_code, input: @standard_inputs}
   end
 
   # フォーム値取得メソッド
