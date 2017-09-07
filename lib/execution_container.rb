@@ -9,6 +9,7 @@ require 'docker'
 require 'json'
 require 'securerandom'
 require 'directory_manager'
+require 'logger'
 
 class ExecutionContainer
   PARENT_DIRECTORY_OF_WORKSPACE_DIR = "/tmp/"
@@ -22,15 +23,15 @@ class ExecutionContainer
   # @option input_data [String] source_code     ソースコード
   # @option input_data [String] standard_input  標準入力
   def initialize(input_data)
-    @language       = input_data[:language]
-    @source_code    = input_data[:source_code]
-    @standard_input = input_data[:standard_input]
+    @language              = input_data[:language]
+    @source_code           = input_data[:source_code]
+    @standard_input        = input_data[:standard_input]
     @identification_number = SecureRandom.hex(8)
-    @working_dirname = "workspace_#{@identification_number}"
+    @working_dirname       = "workspace_#{@identification_number}"
   end
   
   # プログラム実行メソッド
-  # == 手順
+  # == 実行順序
   #   - ディレクトリ・ファイル作成
   #   - コンテナ実行
   #   - 結果取得
@@ -39,12 +40,17 @@ class ExecutionContainer
   # @return [String] json形式の実行結果 
   def execute
     directory_managemer = make_working_directory
-    make_source_file(directory_managemer)
-    make_input_file(directory_managemer)
-    container = make_container
-    result = execute_container(container)
-    execution_time = get_execution_time(directory_managemer)
-    directory_managemer.delete_directory
+    begin
+      make_source_file(directory_managemer)
+      make_input_file(directory_managemer)
+      result = execute_container
+      execution_time = get_execution_time(directory_managemer)
+    rescue Exception => e
+      puts e
+      raise
+    ensure
+      directory_managemer.delete_directory
+    end
     make_result_json(result, execution_time)
   end
 
@@ -54,13 +60,13 @@ class ExecutionContainer
   # @return [Docker::Container] コンテナクラスのインスタンス
   def make_container
     Docker::Container.create(
-      name: "coderunner_#{@identification_number}", 
-      Image: 'ubuntu-dev', 
-      WorkingDir: '/workspace', 
-      Memory: 512 * 1024**2, 
-      MemorySwap: 512 * 1024**2, 
+      name: "coderunner_#{@identification_number}",
+      Image: 'coderunner-ubuntu-env',
+      WorkingDir: '/workspace',
+      Memory: 512 * 1024**2,
+      MemorySwap: 512 * 1024**2,
       PidsLimit: 30,
-      HostConfig: { 
+      HostConfig: {
         Binds:  ["/tmp/#{@working_dirname}:/workspace"]
       },
       Tty: true
@@ -69,11 +75,12 @@ class ExecutionContainer
 
   # コンテナ実行メソッド
   # @return [Hash] コンテナの実行結果
-  def execute_container(container)
+  def execute_container(container = nil)
+    container = make_container unless container
     container.start
     container_cmd = "cd /workspace && /usr/bin/time -q -f \"%e\" -o /workspace/#{EXECUTION_TIME_FILE_NAME} timeout 3 #{make_execution_command} < #{INPUT_FILE_NAME}"  
     result = container.exec(['bash', '-c', container_cmd])
-    container.stop                
+    container.stop
     container.delete(force: true) 
 
     return result
@@ -139,6 +146,9 @@ class ExecutionContainer
   # json作成メソッド
   # @result [Hash] 実行結果
   def make_result_json(container_result, execution_time)
-    {stdout: container_result[0].join(''), stderr: container_result[1].join(''), time: execution_time, exit_code: container_result[2]}.to_json
+    stdout_str = container_result[0].join('').force_encoding('UTF-8') 
+    stderr_str = container_result[1].join('').force_encoding('UTF-8') 
+    exit_code = container_result[2]
+    {stdout: stdout_str, stderr: stderr_str, time: execution_time, exit_code: exit_code}.to_json
   end
 end
