@@ -5,7 +5,7 @@
 require 'open3'
 require 'fileutils'
 
-class DirectoryManagement
+class DirectoryManager
   # 初期化メソッド
   # @param [String] path  管理したいディレクトリのパス
   def initialize(path)

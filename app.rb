@@ -1,4 +1,4 @@
-$: << File.dirname(__FILE__)
+$: << "#{File.dirname(__FILE__)}/lib/"
 
 require 'bundler'
 Bundler.require
@@ -10,7 +10,6 @@ require 'json'
 require 'logger'
 require 'open3'
 require 'fileutils'
-
 
 logger = Logger.new(STDOUT)
 
