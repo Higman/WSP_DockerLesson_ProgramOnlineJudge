@@ -4,6 +4,11 @@ html
     meta charset="utf-8"
     title 簡易オンラインジャッジシステム
   body
+    / エラーポップアップ
+    - if flash[:error]
+      p
+         = flash[:error]
+
     / 入力フォームの作成
     h1 簡易オンラインジャッジシステム
 

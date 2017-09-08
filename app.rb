@@ -8,6 +8,7 @@ require 'sinatra/reloader' if development?
 require 'input_data_manager'
 require 'execution_container'
 require 'logger'
+
 logger = Logger.new(STDOUT)
 
 get '/' do
@@ -19,5 +20,9 @@ post '/api/run' do
   logger.debug(input_data_manager)
   execution_container = ExecutionContainer.new(input_data_manager.get_all)
   content_type(:json)
-  execution_container.execute
+  begin
+    execution_container.execute
+  rescue => e
+    logger.error(e)
+  end
 end

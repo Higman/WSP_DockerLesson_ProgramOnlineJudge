@@ -39,17 +39,16 @@ class ExecutionContainer
   #   - jsonの作成・返却
   # @return [String] json形式の実行結果 
   def execute
-    directory_managemer = make_working_directory
+    directory_manager = make_working_directory
     begin
-      make_source_file(directory_managemer)
-      make_input_file(directory_managemer)
+      make_source_file(directory_manager)
+      make_input_file(directory_manager)
       result = execute_container
-      execution_time = get_execution_time(directory_managemer)
-    rescue Exception => e
-      puts e
-      raise
+      execution_time = get_execution_time(directory_manager)
+    rescue => e
+      raise "error: execution_docker(detail: #{e})"
     ensure
-      directory_managemer.delete_directory
+      directory_manager.delete_directory
     end
     make_result_json(result, execution_time)
   end
@@ -90,19 +89,19 @@ class ExecutionContainer
   # @return [DirectoryManager] ワーキングディレクトリを管理するDirectoryManagerクラスのインスタンス
   def make_working_directory
     working_dir_path = "#{PARENT_DIRECTORY_OF_WORKSPACE_DIR}#{@working_dirname}"
-    directory_managemer = DirectoryManager.new(working_dir_path)
-    directory_managemer.make_directory(0777)
-    return directory_managemer
+    directory_manager = DirectoryManager.new(working_dir_path)
+    directory_manager.make_directory(0777)
+    return directory_manager
   end
 
   # ソースファイル作成メソッド
-  def make_source_file(directory_managemer)
-    directory_managemer.write_file(*make_source_file_data)
+  def make_source_file(directory_manager)
+    directory_manager.write_file(*make_source_file_data)
   end
 
   # 入力ファイル作成メソッド
-  def make_input_file(directory_managemer)
-    directory_managemer.write_file(*make_input_file_data)
+  def make_input_file(directory_manager)
+    directory_manager.write_file(*make_input_file_data)
   end
 
   # ソースファイルデータ作成メソッド
@@ -139,8 +138,8 @@ class ExecutionContainer
 
   # 実行時間取得メソッド
   # @return [String] 実行時間
-  def get_execution_time(directory_managemer)
-    directory_managemer.read_file(EXECUTION_TIME_FILE_NAME)
+  def get_execution_time(directory_manager)
+    directory_manager.read_file(EXECUTION_TIME_FILE_NAME)
   end
 
   # json作成メソッド
