@@ -9,8 +9,6 @@ require 'input_data_manager'
 require 'execution_container'
 require 'logger'
 
-logger = Logger.new(STDOUT)
-
 get '/' do
   slim :index
 end
@@ -23,6 +21,7 @@ post '/api/run' do
   begin
     execution_container.execute
   rescue => e
+    logger = Logger.new(STDOUT)
     logger.error(e)
   end
 end

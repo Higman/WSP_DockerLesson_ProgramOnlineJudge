@@ -9,6 +9,6 @@ RUN apt-get install -y binutils
 
 RUN apt-get install -y language-pack-ja-base language-pack-ja
 
-ENV LANG ja_US.UTF-8
+ENV LANG ja_JP.UTF-8
 ENV LC_ALL ja_JP.UTF-8
 ENV LC_CTYPE ja_JP.UTF-8

@@ -149,8 +149,8 @@ class ExecutionContainer
   # json作成メソッド
   # @result [Hash] 実行結果
   def make_result_json(container_result, execution_time)
-    stdout_str = container_result[0].join('').force_encoding('UTF-8') 
-    stderr_str = container_result[1].join('').force_encoding('UTF-8') 
+    stdout_str = container_result[0].join('')
+    stderr_str = container_result[1].join('')
     exit_code = container_result[2]
     {stdout: stdout_str, stderr: stderr_str, time: execution_time, exit_code: exit_code}.to_json
   end
