@@ -74,7 +74,7 @@ class ExecutionContainer
 
   # コンテナ実行メソッド
   # @return [Hash] コンテナの実行結果
-  def execute_container
+  def execute_container(container)
     begin
       container.start
       container_cmd = "cd /workspace && /usr/bin/time -q -f \"%e\" -o /workspace/#{EXECUTION_TIME_FILE_NAME} timeout 3 #{make_execution_command} < #{INPUT_FILE_NAME}"  
