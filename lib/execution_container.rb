@@ -43,7 +43,7 @@ class ExecutionContainer
     begin
       make_source_file(directory_manager)
       make_input_file(directory_manager)
-      result = execute_container
+      result = execute_container(make_container)
       execution_time = get_execution_time(directory_manager)
     rescue => e
       raise "error: execution_docker(detail: #{e})"
@@ -74,13 +74,17 @@ class ExecutionContainer
 
   # コンテナ実行メソッド
   # @return [Hash] コンテナの実行結果
-  def execute_container(container = nil)
-    container = make_container unless container
-    container.start
-    container_cmd = "cd /workspace && /usr/bin/time -q -f \"%e\" -o /workspace/#{EXECUTION_TIME_FILE_NAME} timeout 3 #{make_execution_command} < #{INPUT_FILE_NAME}"  
-    result = container.exec(['bash', '-c', container_cmd])
-    container.stop
-    container.delete(force: true) 
+  def execute_container
+    begin
+      container.start
+      container_cmd = "cd /workspace && /usr/bin/time -q -f \"%e\" -o /workspace/#{EXECUTION_TIME_FILE_NAME} timeout 3 #{make_execution_command} < #{INPUT_FILE_NAME}"  
+      result = container.exec(['bash', '-c', container_cmd])
+    rescue => e
+      raise e
+    ensure 
+      container.stop
+      container.delete(force: true) 
+    end
 
     return result
   end
