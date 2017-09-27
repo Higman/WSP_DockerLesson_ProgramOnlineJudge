@@ -1,0 +1,38 @@
+@startuml{uml.png}
+
+!include plantUML_inc/color.inc
+
+class ExecutionProgram {
+    - input_datas : ManagementInputData 
+    + exec()
+}
+
+class ManagementInputData {
+    + language : String
+    + sorce_code : String
+    + input_datas : String[]
+    + initialize()
+    - store_datas()
+}
+
+class ManagementDirectory {
+    + path : String
+    + directory_name : String
+    + initialize(String path)
+    + make_file(String name, String content)
+    + get_file_content(String name) : String
+    + delete()
+}
+
+class ExecutionContainer {
+    + initialize()
+    + exec()
+    - make_container()
+}
+
+ExecutionProgram "1" o-- "1" ManagementInputData
+ExecutionProgram "1" o-- "1..*" ExecutionContainer
+ExecutionContainer "1" o-- "1" ManagementDirectory
+
+
+@enduml

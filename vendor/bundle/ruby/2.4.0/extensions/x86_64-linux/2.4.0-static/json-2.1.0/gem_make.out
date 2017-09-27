@@ -1,0 +1,13 @@
+current directory: /mnt/c/Users/YU-YA/univ_kagawa/SLP/WSP/DockerLesson/boulez2/WSP_DockerLesson_ProgramOnlineJudge/vendor/bundle/ruby/2.4.0/gems/json-2.1.0/ext/json
+/home/yu-ya/.rbenv/versions/2.4.1/bin/ruby -r ./siteconf20170909-7292-1xw0ttp.rb extconf.rb
+creating Makefile
+
+current directory: /mnt/c/Users/YU-YA/univ_kagawa/SLP/WSP/DockerLesson/boulez2/WSP_DockerLesson_ProgramOnlineJudge/vendor/bundle/ruby/2.4.0/gems/json-2.1.0/ext/json
+make "DESTDIR=" clean
+
+current directory: /mnt/c/Users/YU-YA/univ_kagawa/SLP/WSP/DockerLesson/boulez2/WSP_DockerLesson_ProgramOnlineJudge/vendor/bundle/ruby/2.4.0/gems/json-2.1.0/ext/json
+make "DESTDIR="
+make: 'all' に対して行うべき事はありません.
+
+current directory: /mnt/c/Users/YU-YA/univ_kagawa/SLP/WSP/DockerLesson/boulez2/WSP_DockerLesson_ProgramOnlineJudge/vendor/bundle/ruby/2.4.0/gems/json-2.1.0/ext/json
+make "DESTDIR=" install
