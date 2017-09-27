@@ -1,5 +1,0 @@
-current directory: /media/sf_ProgramOnlineJudge/vendor/bundle/ruby/2.4.0/gems/json-2.1.0/ext/json/ext/generator
-/usr/bin/ruby2.4 -r ./siteconf20170909-2459-161pia2.rb extconf.rb
-creating Makefile
-
-Text file busy @ unlink_internal - ./siteconf20170909-2459-161pia2.rb
